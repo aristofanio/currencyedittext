@@ -67,6 +67,17 @@ public class CurrencyEditText extends EditText {
     }
 
     /**
+     * Retrieve the double value that was input by the user in their currencies lowest denomination (e.g. pennies).
+     *
+     *
+     * @return The double value that was input by the user, in the lowest denomination of that users
+     *  deviceLocale.
+     */
+    public double getDoubleValue() {
+        return (rawValue / Math.pow(10, decimalDigits));
+    }
+
+    /**
      * Sets the value to be formatted and displayed in the CurrencyEditText view.
      *
      * @param value - The value to be converted, represented in the target currencies lowest denomination (e.g. pennies).
@@ -75,6 +86,19 @@ public class CurrencyEditText extends EditText {
         String formattedText = format(value);
         setText(formattedText);
     }
+
+    /**
+     * Sets the value to be formatted and displayed in the CurrencyEditText view.
+     *
+     * @param value - The value to be converted, represented in the target currencies lowest denomination (e.g. pennies).
+     */
+    public void setValue(double value){
+        long rawValue = ((Double) (value * Math.pow(10, decimalDigits))).longValue();
+        String formattedText = format(rawValue);
+        setText(formattedText);
+    }
+
+
 
     /**
      * The current locale used by this instance of CurrencyEditText. By default, will be the users
