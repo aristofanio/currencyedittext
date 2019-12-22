@@ -270,4 +270,38 @@ public class CurrencyEditTextTests {
 
         assertThat(currencyEditText.getText().toString(), is(equalTo("")));
     }
+
+    @Test
+    public void precisionInDoubleTest(){
+        double d1 = 74.1;
+        double d2 = Math.pow(10,2);
+        currencyEditText.setValue(d1);
+        assertThat(d1*d2, is(7409.999999999999));
+        assertThat(currencyEditText.getText().toString(), is(equalTo("BRL74.10")));
+        assertThat(currencyEditText.getRawValue(), is(equalTo(7410L)));
+        assertThat(currencyEditText.getDoubleValue(), is(equalTo(74.1)));
+        assertThat(currencyEditText.getDoubleValue(), is(equalTo(74.10)));
+    }
+
+    @Test
+    public void precisionInDoubleTest2(){
+        double d1 = 0.25;
+        double d2 = 0.2;
+        currencyEditText.setValue(d1 + d2);
+        assertThat(currencyEditText.getText().toString(), is(equalTo("BRL0.45")));
+        assertThat(currencyEditText.getRawValue(), is(equalTo(45L)));
+        assertThat(currencyEditText.getDoubleValue(), is(equalTo(0.45)));
+    }
+
+    @Test
+    public void precisionInDoubleTest3(){
+        double d1 = 0.1;
+        double d2 = 0.2;
+        currencyEditText.setValue(d1 + d2);
+        assertThat(d1 + d2, is(0.30000000000000004));
+        assertThat(currencyEditText.getText().toString(), is(equalTo("BRL0.30")));
+        assertThat(currencyEditText.getRawValue(), is(equalTo(30L)));
+        assertThat(currencyEditText.getDoubleValue(), is(equalTo(0.30)));
+    }
+
 }

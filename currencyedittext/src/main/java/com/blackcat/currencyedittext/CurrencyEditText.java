@@ -2,11 +2,13 @@ package com.blackcat.currencyedittext;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.icu.text.NumberFormat;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
@@ -93,7 +95,9 @@ public class CurrencyEditText extends EditText {
      * @param value - The value to be converted, represented in the target currencies lowest denomination (e.g. pennies).
      */
     public void setValue(double value){
-        long rawValue = ((Double) (value * Math.pow(10, decimalDigits))).longValue();
+        BigDecimal bigValue = new BigDecimal(String.valueOf(value));
+        BigDecimal multiplier = new BigDecimal(Math.pow(10, decimalDigits));
+        long rawValue = bigValue.multiply(multiplier).longValue();
         String formattedText = format(rawValue);
         setText(formattedText);
     }
@@ -236,6 +240,10 @@ public class CurrencyEditText extends EditText {
     }
 
     private String format(long val){
+        return CurrencyTextFormatter.formatText(String.valueOf(val), currentLocale, defaultLocale, decimalDigits);
+    }
+
+    private String format(double val){
         return CurrencyTextFormatter.formatText(String.valueOf(val), currentLocale, defaultLocale, decimalDigits);
     }
 
